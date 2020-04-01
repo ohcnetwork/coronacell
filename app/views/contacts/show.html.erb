@@ -35,5 +35,15 @@
   <%= @contact.landmark %>
 </p>
 
+<% @contact.medical_reqs.each do |med_req| %>
+    <p>
+        <% if med_req.need_medicines %>
+            Hello
+        <% end %>
+    </p>
+<% end %>
+
+<%= render 'medical_reqs/form' %>
+
 <%= link_to 'Edit', edit_contact_path(@contact) %> |
 <%= link_to 'Back', contacts_path %>
