@@ -15,6 +15,7 @@
     <%= f.input :password_confirmation,
                 required: true,
                 input_html: { autocomplete: "new-password" } %>
+      <%= f.association :panchayat, collection: Panchayat.all() %>
   </div>
 
   <div class="form-actions">

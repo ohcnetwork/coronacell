@@ -10,4 +10,6 @@ class User < ApplicationRecord
   def set_default_role
     self.role ||= :phone_caller
   end
+
+  belongs_to :panchayat, optional: true
 end
