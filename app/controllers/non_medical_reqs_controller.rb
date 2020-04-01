@@ -1,0 +1,2 @@
+class NonMedicalReqsController < ApplicationController
+end
