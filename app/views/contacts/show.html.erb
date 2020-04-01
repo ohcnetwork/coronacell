@@ -38,14 +38,14 @@
 <% @contact.medical_reqs.each do |med_req| %>
     <p>
         <% if med_req.need_medicines %>
-            Hello
+            Medical Requirement
         <% end %>
     </p>
 <% end %>
 <% @contact.non_medical_reqs.each do |non_med_req| %>
     <p>
         <% if non_med_req.need_food %>
-            Hello
+            Non Medical Requirement
         <% end %>
     </p>
 <% end %>
