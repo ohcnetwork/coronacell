@@ -4,7 +4,11 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    @contacts = Contact.all
+    if current_user.panchayat_admin?
+      @contacts = Contact.where(panchayat: current_user.panchayat)
+    else
+      @contacts = Contact.all
+    end
   end
 
   # GET /contacts/1
