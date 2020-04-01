@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @contact.name %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @contact.phone %>
+</p>
+
+<p>
+  <strong>Gender:</strong>
+  <%= @contact.gender %>
+</p>
+
+<p>
+  <strong>Age:</strong>
+  <%= @contact.age %>
+</p>
+
+<p>
+  <strong>House name:</strong>
+  <%= @contact.house_name %>
+</p>
+
+<p>
+  <strong>Ward:</strong>
+  <%= @contact.ward %>
+</p>
+
+<p>
+  <strong>Landmark:</strong>
+  <%= @contact.landmark %>
+</p>
+
+<% @contact.medical_reqs.each do |med_req| %>
+    <p>
+        <% if med_req.need_medicines %>
+            Medical Requirement
+        <% end %>
+    </p>
+<% end %>
+<% @contact.non_medical_reqs.each do |non_med_req| %>
+    <p>
+        <% if non_med_req.need_food %>
+            Non Medical Requirement
+        <% end %>
+    </p>
+<% end %>
+
+<%= render 'medical_reqs/form' %>
+<%= render 'non_medical_reqs/form' %>
+
+<%= link_to 'Edit', edit_contact_path(@contact) %> |
+<%= link_to 'Back', contacts_path %>
