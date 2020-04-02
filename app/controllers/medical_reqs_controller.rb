@@ -41,6 +41,6 @@ def create
   private
 
   def medical_req_params
-    params[:medical_req].permit(:need_medicines, :fullfilled, :requirement_type)
+    params[:medical_req].permit(:need_medicines, :fullfilled, :requirement_type, :other_needs)
   end
 end

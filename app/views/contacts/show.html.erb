@@ -82,9 +82,14 @@
                         <% @contact.medical_reqs.each do |medical_req| %>
                         <% if not medical_req.fullfilled? %>
                         <li class="mt-2	block p-2 flex items-center justify-between border rounded">
-                            <p>
-                                Needs <%= medical_req.requirement_type.to_s.titleize %> Medicines
-                            </p>
+                            <div>
+                                <p>
+                                    Needs <%= medical_req.requirement_type.to_s.titleize %> Medicines
+                                </p>
+                                <p>
+                                    Other Comments: <%= medical_req.other_needs %>
+                                </p>
+                            </div>
                             <div>
                                 <span class="text-xs">
                                     Requested
