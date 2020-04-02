@@ -33,26 +33,40 @@
                     <% @contacts.each do |contact| %>
                     <tr>
                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 font-medium text-gray-900">
+                            <%= link_to contact do %>
                             <%= contact.name %>
+                            <% end %>
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap border-b text-right border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= link_to contact do %>
                             <%= contact.phone %>
+                            <% end %>
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= link_to contact do %>
                             <div class="">
                                 <p class="">
                                     <%= contact.house_name %>
                                 </p>
-                                <p>
+                                <p class="mt-1">
                                     Ward <%= contact.ward %>, <%= contact.panchayat.name %>
                                 </p>
                             </div>
+                            <% end %>
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                            Owner
+                            <% contact.medical_reqs.each do |med_req| %>
+                            <p class="mt-1">
+                                <%= med_req.requirement_type.to_s.split("_").join(" ").titlecase %>
+                            </p>
+                            <% end %>
                         </td>
-                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">Edit</a>
+                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <% contact.non_medical_reqs.each do |non_med_req| %>
+                            <p class="mt-1">
+                                <%= non_med_req.requirement_type.to_s.split("_").join(" ").titlecase %>
+                            </p>
+                            <% end %>
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
                             <a href="#" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">Edit</a>
