@@ -42,9 +42,7 @@
 
 <% @contact.medical_reqs.each do |med_req| %>
     <p>
-        <% if med_req.need_medicines %>
-            Medical Requirement
-        <% end %>
+        <%= med_req.requirement_type %>
     </p>
 <% end %>
 <% @contact.non_medical_reqs.each do |non_med_req| %>
