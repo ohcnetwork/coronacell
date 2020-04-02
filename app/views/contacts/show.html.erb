@@ -10,6 +10,8 @@
         </div>
         <div class="mt-3 lg:mt-0">
             <%= link_to 'Edit Contact', edit_contact_path(@contact), class: 'inline-flex items-center px-3 py-2 rounded-md text-sm font-medium leading-5 bg-gray-100 text-gray-800' %>
+            <%= link_to 'Finish Call', make_call_contact_path(@contact, user_id: current_user.id), class: 'lg:ml-1 inline-flex items-center px-3 py-2 text-sm rounded-md font-medium leading-5 bg-green-100 text-green-800' %>
+
         </div>
     </div>
     <div class="px-4 py-5 sm:p-0">
@@ -37,6 +39,12 @@
                     Last Called
                 </dt>
                 <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                    <% if @last_call %>
+                    Called <span class="font-bold"><%= time_ago_in_words(@last_call.created_at) %></span> ago, by <%= @last_call.user.email %>
+                    <% else %>
+                    Not called yet
+                    <% end %>
+
                 </dd>
             </div>
             <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
