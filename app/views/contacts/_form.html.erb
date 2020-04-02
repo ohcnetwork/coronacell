@@ -10,6 +10,7 @@
     <%= f.input :age %>
     <%= f.input :house_name %>
     <%= f.input :ward %>
+    <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select'} %>
     <%= f.input :landmark %>
   </div>
 

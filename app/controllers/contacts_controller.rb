@@ -4,7 +4,11 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    @contacts = Contact.all
+    if current_user.panchayat_admin?
+      @contacts = Contact.where(panchayat: current_user.panchayat)
+    else
+      @contacts = Contact.all
+    end
   end
 
   # GET /contacts/1
@@ -69,6 +73,6 @@ class ContactsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contact_params
-      params.require(:contact).permit(:name, :phone, :gender, :age, :house_name, :ward, :landmark)
+      params.require(:contact).permit(:name, :phone, :gender, :age, :house_name, :ward, :landmark, :panchayat_id)
     end
 end
