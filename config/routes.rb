@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root 'contacts#index'
 
   resources :contacts, except: [:destroy] do
+    get :make_call, on: :member
     resources :non_medical_reqs do
       get :fullfill, on: :member
     end

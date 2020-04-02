@@ -1,5 +1,5 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: [:show, :edit, :update, :destroy]
+  before_action :set_contact, only: [:show, :edit, :update, :destroy, :make_call]
 
   # GET /contacts
   # GET /contacts.json
@@ -65,6 +65,16 @@ class ContactsController < ApplicationController
     end
   end
 
+  def make_call
+    called_user = User.find(params[:user_id])
+    @contact.calls.create(user: called_user)
+    respond_to do |format|
+      format.html { redirect_to contacts_path, notice: "Contact #{@contact.name} was successfully Called" }
+      format.json { head :no_content }
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
@@ -73,6 +83,6 @@ class ContactsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contact_params
-      params.require(:contact).permit(:name, :phone, :gender, :age, :house_name, :ward, :landmark, :panchayat_id, :ration_type, :willing_to_pay, :number_of_family_members, :feedback)
+      params.require(:contact).permit(:name, :phone, :gender, :age, :house_name, :ward, :landmark, :panchayat_id, :ration_type, :willing_to_pay, :number_of_family_members, :feedback, :user_id)
     end
 end
