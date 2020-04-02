@@ -4,10 +4,16 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    if current_user.panchayat_admin?
-      @contacts = Contact.where(panchayat: current_user.panchayat)
-    else
+    contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
+
+    if current_user.admin?
       @contacts = Contact.all
+    elsif current_user.district_admin?
+      @contacts = Contact.all
+    elsif current_user.panchayat_admin?
+      @contacts = Contact.where(panchayat: current_user.panchayat)
+    elsif current_user.phone_caller?
+      @contacts = contacts_called_by_user_today
     end
   end
 
