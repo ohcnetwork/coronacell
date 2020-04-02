@@ -41,6 +41,6 @@ class NonMedicalReqsController < ApplicationController
   private
 
   def non_medical_req_params
-    params[:non_medical_req].permit(:need_food, :fullfilled)
+    params[:non_medical_req].permit(:need_food, :fullfilled, :requirement_type)
   end
 end

@@ -47,9 +47,7 @@
 <% end %>
 <% @contact.non_medical_reqs.each do |non_med_req| %>
     <p>
-        <% if non_med_req.need_food %>
-            Non Medical Requirement
-        <% end %>
+        <%= non_med_req.requirement_type %>
     </p>
 <% end %>
 
