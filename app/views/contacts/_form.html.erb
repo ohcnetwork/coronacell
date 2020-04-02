@@ -9,11 +9,13 @@
         <%= f.input :gender %>
         <%= f.input :age %>
         <%= f.input :house_name %>
+        <%= f.input :number_of_family_members %>
         <%= f.input :ward %>
         <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select'} %>
         <%= f.input :landmark %>
         <%= f.input :ration_type, input_html: {class: 'form-select'} %>
         <%= f.input :willing_to_pay, input_html: {class: 'form-checkbox'} %>
+        <%= f.input :feedback %>
     </div>
 
     <div class="form-actions">

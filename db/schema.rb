@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_182737) do
+ActiveRecord::Schema.define(version: 2020_04_02_183549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2020_04_02_182737) do
     t.bigint "panchayat_id"
     t.boolean "willing_to_pay"
     t.string "ration_type"
+    t.string "feedback"
+    t.integer "number_of_family_members"
     t.index ["panchayat_id"], name: "index_contacts_on_panchayat_id"
     t.index ["phone"], name: "index_contacts_on_phone", unique: true
   end
