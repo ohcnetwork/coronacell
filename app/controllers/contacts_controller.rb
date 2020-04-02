@@ -14,6 +14,7 @@ class ContactsController < ApplicationController
   # GET /contacts/1
   # GET /contacts/1.json
   def show
+    @last_call = @contact.calls.order("created_at").last
   end
 
   # GET /contacts/new
