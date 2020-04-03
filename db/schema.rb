@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_01_122532) do
+ActiveRecord::Schema.define(version: 2020_04_03_013953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "calls", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contact_id"], name: "index_calls_on_contact_id"
+    t.index ["user_id"], name: "index_calls_on_user_id"
+  end
 
   create_table "contacts", force: :cascade do |t|
     t.string "name"
@@ -26,6 +35,12 @@ ActiveRecord::Schema.define(version: 2020_04_01_122532) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "panchayat_id"
+    t.boolean "willing_to_pay"
+    t.string "ration_type"
+    t.string "feedback"
+    t.integer "number_of_family_members"
+    t.date "date_of_contact"
+    t.string "tracking_type"
     t.index ["panchayat_id"], name: "index_contacts_on_panchayat_id"
     t.index ["phone"], name: "index_contacts_on_phone", unique: true
   end
@@ -36,6 +51,8 @@ ActiveRecord::Schema.define(version: 2020_04_01_122532) do
     t.boolean "fullfilled"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "requirement_type"
+    t.string "other_needs"
     t.index ["contact_id"], name: "index_medical_reqs_on_contact_id"
   end
 
@@ -45,6 +62,8 @@ ActiveRecord::Schema.define(version: 2020_04_01_122532) do
     t.boolean "fullfilled"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "requirement_type"
+    t.string "other_needs"
     t.index ["contact_id"], name: "index_non_medical_reqs_on_contact_id"
   end
 
@@ -69,6 +88,8 @@ ActiveRecord::Schema.define(version: 2020_04_01_122532) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "calls", "contacts"
+  add_foreign_key "calls", "users"
   add_foreign_key "medical_reqs", "contacts"
   add_foreign_key "non_medical_reqs", "contacts"
 end

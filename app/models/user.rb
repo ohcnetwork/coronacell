@@ -12,4 +12,7 @@ class User < ApplicationRecord
   end
 
   belongs_to :panchayat, optional: true
+
+  has_many :calls
+  has_many :called, through: :calls, source: :contact
 end

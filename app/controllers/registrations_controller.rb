@@ -4,14 +4,23 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     super do
-      # resource.district = @current_user.district
-      # resource.save
+      if current_user.try(:admin)
+        if not ["district_admin", "panchayat_admin", "phone_caller"].include?(resource.role)
+          resource.role = "phone_caller"
+          resource.save
+        end
+      elsif current_user.try(:district_admin)
+        if not ["panchayat_admin", "phone_caller"].include?(resource.role)
+          resource.role = "phone_caller"
+          resource.save
+        end
+      end
     end
   end
 
   private
   def redirect_unless_admin
-    unless current_user.try(:admin?)
+    unless current_user.try(:admin?) or current_user.try(:district_admin?)
       flash[:alert] = "Access Denied! Only Admins are Allowed Access"
       redirect_to root_path
     end
