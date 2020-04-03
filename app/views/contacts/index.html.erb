@@ -21,6 +21,12 @@
                             Address
                         </th>
                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            To Pay
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Ration
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Medical
                         </th>
                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -45,12 +51,24 @@
                             <%= link_to contact do %>
                             <div class="">
                                 <p class="">
-                                    <%= contact.house_name %>
+                                    <%= contact.house_name.truncate(30) %>
                                 </p>
                                 <p class="mt-1">
                                     Ward <%= contact.ward %>, <%= contact.panchayat.name %>
                                 </p>
                             </div>
+                            <% end %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <% if contact.willing_to_pay? %>
+                                Yes
+                            <% else %>
+                                No
+                            <% end %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <% if contact.ration_type.present? %>
+                                <%= contact.ration_type.to_s.titlecase %>
                             <% end %>
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
