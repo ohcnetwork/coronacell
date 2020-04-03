@@ -10,6 +10,12 @@
 
     <div>
         <hr class="pb-4" />
+        <%= f.input :date_of_contact, label: 'Date of Arrival / Contact', as: :date, input_html: {class: 'form-select p-2 border'}%>
+        <%= f.input :tracking_type, input_html: {class: 'form-select'} %>
+    </div>
+
+    <div>
+        <hr class="pb-4" />
         <%= f.input :house_name %>
         <%= f.input :number_of_family_members %>
         <%= f.input :ward %>
