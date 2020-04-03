@@ -1,15 +1,26 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: [:show, :edit, :update, :destroy]
+  before_action :set_contact, only: [:show, :edit, :update, :destroy, :make_call]
 
   # GET /contacts
   # GET /contacts.json
   def index
-    @contacts = Contact.all
+    contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
+
+    if current_user.admin?
+      @contacts = Contact.all
+    elsif current_user.district_admin?
+      @contacts = Contact.all
+    elsif current_user.panchayat_admin?
+      @contacts = Contact.where(panchayat: current_user.panchayat)
+    elsif current_user.phone_caller?
+      @contacts = contacts_called_by_user_today
+    end
   end
 
   # GET /contacts/1
   # GET /contacts/1.json
   def show
+    @last_call = @contact.calls.order("created_at").last
   end
 
   # GET /contacts/new
@@ -61,6 +72,16 @@ class ContactsController < ApplicationController
     end
   end
 
+  def make_call
+    called_user = User.find(params[:user_id])
+    @contact.calls.create(user: called_user)
+    respond_to do |format|
+      format.html { redirect_to contacts_path, notice: "Contact #{@contact.name} was successfully Called" }
+      format.json { head :no_content }
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
@@ -69,6 +90,6 @@ class ContactsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contact_params
-      params.require(:contact).permit(:name, :phone, :gender, :age, :house_name, :ward, :landmark)
+      params.require(:contact).permit(:name, :phone, :gender, :age, :house_name, :ward, :landmark, :panchayat_id, :ration_type, :willing_to_pay, :number_of_family_members, :feedback, :user_id, :date_of_contact, :tracking_type)
     end
 end

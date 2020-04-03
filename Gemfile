@@ -30,6 +30,11 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 # Simple Form
 gem 'simple_form'
+# Devise Auth
+gem 'devise'
+# String Enums as Select
+gem 'enum_help'
+
 
 
 group :development, :test do
