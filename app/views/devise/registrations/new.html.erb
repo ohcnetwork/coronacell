@@ -21,7 +21,11 @@
 
         <div class="mt-8">
             <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select', id: 'dropdown-choice-select'} %>
-            <%= f.input :role, input_html: {class: 'form-select'} %>
+            <% if current_user.try(:admin?) %>
+                <%= f.input :role, input_html: {class: 'form-select'} %>
+            <% elsif current_user.try(:district_admin?) %>
+                <%= f.input :role, collection: ["panchayat_admin", "phone_caller"], input_html: {class: 'form-select'} %>
+            <% end %>
         </div>
 
         <div class="form-actions mt-4">
