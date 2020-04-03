@@ -63,7 +63,7 @@
                     <ul>
                         <li class="my-2"><span class="font-bold">House:</span> <span><%= @contact.house_name %></span></li>
                         <li class="my-2"><span class="font-bold">Ward: </span><%= @contact.ward %></span></li>
-                        <li class="my-2"><span class="font-bold">Panchayath: </span><%= @contact.panchayat.name %></span></li>
+                        <li class="my-2"><span class="font-bold">Panchayat: </span><%= @contact.panchayat.name %></span></li>
                         <li class="my-2"><span class="font-bold">Landmark: </span><%= @contact.landmark %></span></li>
                     </ul>
                 </dd>
@@ -165,6 +165,7 @@
                 <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                     <%= simple_form_for @contact, defaults: { input_html: {class: 'form-input mt-1 font-sans'}, wrapper_html: {class: 'flex flex-col my-4'}, label_html: {class: 'mb-1'}} do |f|%>
                     <div class="">
+                        <%= f.input :willing_to_pay, label: 'Wiling to Pay for Request ?', input_html: {class: 'form-checkbox mr-1 p-2'} %>
                         <%= f.input :feedback, label: 'Feedback Comments if Any' %>
                         <%= f.button :submit, 'Save', class: 'inline-flex items-center px-3 py-3 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150' %>
                     </div>
