@@ -14,7 +14,7 @@
         <%= f.input :number_of_family_members %>
         <%= f.input :ward %>
         <%= f.input :landmark %>
-        <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select'} %>
+        <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select', id: 'dropdown-choice-select'} %>
     </div>
 
     <div>

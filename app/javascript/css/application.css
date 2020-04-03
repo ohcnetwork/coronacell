@@ -1,4 +1,8 @@
 /* app/javascript/css/application.css */
+/*! purgecss start ignore */
+@import "choices.js/public/assets/styles/choices.css";
+/*! purgecss end ignore */
+
 /* purgecss start ignore */
 @tailwind base;
 @tailwind components;

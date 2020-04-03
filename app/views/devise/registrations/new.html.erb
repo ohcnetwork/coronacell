@@ -20,7 +20,7 @@
         </div>
 
         <div class="mt-8">
-            <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select'} %>
+            <%= f.association :panchayat, collection: Panchayat.all(), input_html: {class: 'form-select', id: 'dropdown-choice-select'} %>
             <%= f.input :role, input_html: {class: 'form-select'} %>
         </div>
 
