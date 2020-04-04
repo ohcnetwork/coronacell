@@ -1,14 +1,14 @@
+<% if current_user.is_admin? %>
 <section>
     <h1 class="text-xl font-bold">Generate Reports</h1>
 
     <div class="flex">
         <span class="mt-2 inline-flex rounded-md shadow-sm">
-            <% if current_user.is_admin? %>
             <%= link_to 'Download Full Report', contacts_path(format: :csv), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150' %>
-            <% end %>
         </span>
     </div>
 </section>
+<% end %>
 
 <hr class="block my-8" />
 
