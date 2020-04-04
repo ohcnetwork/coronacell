@@ -27,6 +27,20 @@ def create
     end
   end
 
+  def not_able
+    @medical_req = MedicalReq.find(params[:id])
+    @contact = Contact.find(params[:contact_id])
+    @medical_req.not_able = true
+
+    if @medical_req.save
+      respond_to do |format|
+        format.html { redirect_to @contact, notice: 'Request was marked as Not Able to Complete' }
+      end
+    else
+      flash.now[:danger] = 'There was an error saving the Non Medical Requirement, Contact Your Admin'
+    end
+  end
+
   def destroy
     @medical_req = MedicalReq.find(params[:id])
     @contact = Contact.find(params[:contact_id])

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     end
     resources :medical_reqs do
       get :fullfill, on: :member
+      get :not_able, on: :member
     end
   end
 end
