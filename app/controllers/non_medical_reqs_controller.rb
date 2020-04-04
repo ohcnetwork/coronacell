@@ -27,6 +27,20 @@ class NonMedicalReqsController < ApplicationController
     end
   end
 
+  def not_able
+    @non_medical_req = NonMedicalReq.find(params[:id])
+    @contact = Contact.find(params[:contact_id])
+    @non_medical_req.not_able = true
+
+    if @non_medical_req.save
+      respond_to do |format|
+        format.html { redirect_to @contact, notice: 'Request was marked as Complete' }
+      end
+    else
+      flash.now[:danger] = 'There was an error saving the Non Medical Requirement, Contact Your Admin'
+    end
+  end
+
   def destroy
     @non_medical_req = NonMedicalReq.find(params[:id])
     @contact = Contact.find(params[:contact_id])
