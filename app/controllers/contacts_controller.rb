@@ -15,6 +15,11 @@ class ContactsController < ApplicationController
     elsif current_user.phone_caller?
       @contacts = contacts_called_by_user_today
     end
+
+    respond_to do |format|
+      format.html
+      format.csv {send_data @contacts.to_csv, filename: "requests-#{Date.today}.csv"}
+    end
   end
 
   # GET /contacts/1
