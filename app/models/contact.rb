@@ -71,7 +71,7 @@ class Contact < ApplicationRecord
           contact.willing_to_pay ? 'Yes' : 'No',
           contact.ration_type,
           contact.number_of_family_members,
-          contact.medical_reqs.pluck(:requirement_type, :other_needs).map{ |req| "Need #{req[0]} (#{req[1]})" }.join(', '),
+          contact.medical_reqs.pluck(:requirement_type, :other_needs).map{ |req| "#{req[0]} Medicine (#{req[1]})" }.join(', '),
         ]
       end
     end
