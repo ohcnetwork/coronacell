@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   root 'contacts#index'
 
+  get 'find_phone' => "contacts#find_phone"
   resources :contacts, except: [:destroy] do
     get :make_call, on: :member
     get :generate_non_medical_reqs, on: :collection

@@ -96,6 +96,16 @@ class ContactsController < ApplicationController
     end
   end
 
+  def find_phone
+    phone = params["search"]["phone_number"]
+    @contact = Contact.find_by(phone: phone)
+    if @contact
+      redirect_to @contact
+    else
+      redirect_to action: :new
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
