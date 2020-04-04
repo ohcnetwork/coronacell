@@ -18,7 +18,7 @@
         <h4 class="font-bold">Corona Cell</h4>
         <% end %>
 
-        <% if user_signed_in? %>
+        <% if user_signed_in? and (not current_user.panchayat_admin?) %>
         <div class="flex flex-col lg:flex-row items-start lg:items-center text-sm">
             <div>
                 <div class="mt-2 lg:mt-0 flex rounded-md shadow-sm">
