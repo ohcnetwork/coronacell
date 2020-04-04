@@ -17,6 +17,6 @@ class User < ApplicationRecord
   has_many :called, through: :calls, source: :contact
 
   def is_admin?
-    role in [:district_admin, :panchayat_admin, :admin]
+    ["district_admin", "panchayat_admin", "admin"].include?(role)
   end
 end
