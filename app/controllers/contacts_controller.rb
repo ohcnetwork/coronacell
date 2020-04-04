@@ -1,18 +1,12 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :edit, :update, :destroy, :make_call]
+  before_action :set_scoped_contacts, only: [:index, :generate_non_medical_reqs]
 
   # GET /contacts
   # GET /contacts.json
   def index
-    contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
-
-    if current_user.admin?
-      @contacts = Contact.all
-    elsif current_user.district_admin?
-      @contacts = Contact.all
-    elsif current_user.panchayat_admin?
-      @contacts = Contact.where(panchayat: current_user.panchayat)
-    elsif current_user.phone_caller?
+    if current_user.phone_caller?
+      contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
       @contacts = contacts_called_by_user_today
     end
 
@@ -86,11 +80,38 @@ class ContactsController < ApplicationController
     end
   end
 
+  def generate_non_medical_reqs
+    unscoped_contacts = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil}).distinct
+    contacts = scope_access(unscoped_contacts)
+    respond_to do |format|
+      format.csv { send_data contacts.to_non_medical_csv, filename: "users-#{Date.today}.csv" }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
       @contact = Contact.find(params[:id])
+    end
+
+    def set_scoped_contacts
+      if current_user.admin?
+        @contacts = Contact.all
+      elsif current_user.district_admin?
+        @contacts = Contact.all
+      elsif current_user.panchayat_admin?
+        @contacts = Contact.where(panchayat: current_user.panchayat)
+      end
+    end
+
+    def scope_access(contacts)
+      if current_user.admin?
+        contacts
+      elsif current_user.district_admin?
+        contacts
+      elsif current_user.panchayat_admin?
+        contacts.where(panchayat: current_user.panchayat)
+      end
     end
 
     # Only allow a list of trusted parameters through.
