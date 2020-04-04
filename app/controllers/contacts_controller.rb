@@ -4,7 +4,12 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    unscoped_contacts = Contact.joins(:non_medical_reqs, :medical_reqs).where(non_medical_reqs: {fullfilled: nil}).or(Contact.joins(:non_medical_reqs,:medical_reqs).where(medical_reqs: {fullfilled: nil})).distinct
+    ###########################################################################################################################
+    # unscoped_non_medical = Contact.joins(:non_medical_reqs).joins(:medicaL_reqs).where(non_medical_reqs: {fullfilled: nil}) #
+    # unscoped_medical = Contact.joins(:non_medical_reqs).joins(:medical_reqs).where(medical_reqs: {fullfilled: nil})         #
+    # unscoped_contacts = unscoped_medical.or(unscoped_non_medical)                                                           #
+    ###########################################################################################################################
+    unscoped_contacts = Contact.all
     @contacts = scope_access(unscoped_contacts)
     if current_user.phone_caller?
       contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
@@ -81,6 +86,13 @@ class ContactsController < ApplicationController
     end
   end
 
+  def generate_medical_reqs
+    unscoped_contacts = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil}).distinct
+    contacts = scope_access(unscoped_contacts)
+    respond_to do |format|
+      format.csv { send_data contacts.to_medical_csv, filename: "users-#{Date.today}.csv" }
+    end
+  end
   def generate_non_medical_reqs
     unscoped_contacts = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil}).distinct
     contacts = scope_access(unscoped_contacts)
