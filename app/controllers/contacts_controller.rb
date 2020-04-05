@@ -4,7 +4,10 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    unscoped_contacts = Contact.left_joins(:non_medical_reqs, :medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able: nil}).or(Contact.left_joins(:non_medical_reqs, :medical_reqs).where(medical_reqs: {fullfilled: nil, not_able: nil})).distinct
+    non_medical_ids = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able: nil}).distinct.pluck(:id)
+    medical_ids = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able: nil}).distinct.pluck(:id)
+    unscoped_contacts = Contact.where(id: non_medical_ids + medical_ids).distinct
+
     @contacts = scope_access(unscoped_contacts)
     if current_user.phone_caller?
       contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
