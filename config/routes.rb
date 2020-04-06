@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   root 'contacts#index'
 
+  get '/health_volunteer', to: redirect('https://docs.google.com/forms/d/e/1FAIpQLSf9BHXZ9cKd8QPkWZ3fHXLliCXfrKOlIdBBJgGcLhEMPMzkfQ/viewform?vc=0&c=0&w=1')
+
   get 'find_phone' => "contacts#find_phone"
   resources :contacts, except: [:destroy] do
     get :make_call, on: :member
