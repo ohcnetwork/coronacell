@@ -14,6 +14,22 @@ class ContactsController < ApplicationController
       @contacts = contacts_called_by_user_today
     end
 
+    if current_user.panchayat_admin?
+      @non_medical_count = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).distinct.count
+      @medical_count = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).distinct.count
+
+      @non_medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+      @medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+    end
+
+    if current_user.district_admin? or current_user.admin?
+      @non_medical_count = Contact.joins(:non_medical_reqs).distinct.count
+      @medical_count = Contact.joins(:medical_reqs).distinct.count
+
+      @non_medical_count_remaining = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+      @medical_count_remaining = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+    end
+
     respond_to do |format|
       format.html
       format.csv {send_data @contacts.to_csv, filename: "requests-#{Date.today}.csv"}
