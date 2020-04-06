@@ -30,7 +30,7 @@ def create
   def not_able
     @medical_req = MedicalReq.find(params[:id])
     @contact = Contact.find(params[:contact_id])
-    @medical_req.not_able = true
+    @medical_req.not_able_type = params[:not_able_type]
 
     if @medical_req.save
       respond_to do |format|
