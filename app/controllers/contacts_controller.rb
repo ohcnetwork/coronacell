@@ -28,6 +28,17 @@ class ContactsController < ApplicationController
 
       @non_medical_count_remaining = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
       @medical_count_remaining = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+
+      panchayats = Panchayat.order(name: :asc)
+      @panchayats_data = panchayats.map {|p|
+        {
+          name: p.name,
+          p_non_medical_count:  Contact.where(panchayat: p).joins(:non_medical_reqs).distinct.count,
+          p_medical_count:  Contact.where(panchayat: p).joins(:medical_reqs).distinct.count,
+          p_non_medical_count_remaining: Contact.where(panchayat: p).joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count,
+          p_medical_count_remaining:  Contact.where(panchayat: p ).joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+        }
+      }
     end
 
     respond_to do |format|

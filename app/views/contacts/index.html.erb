@@ -109,6 +109,7 @@
     <% end %>
 </div>
 
+<% if current_user.panchayat_admin? or current_user.phone_caller? %>
 <div class="mt-4 flex flex-col">
     <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
@@ -196,3 +197,65 @@
         </div>
     </div>
 </div>
+<% else %>
+<div class="mt-4 flex flex-col">
+    <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Name
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Total
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Remaining
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Medical
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Remaining
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Non Medical 
+                        </th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Remaining
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    <% @panchayats_data.each do |panchayat| %>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 font-medium text-gray-900">
+                            <%= panchayat[:name] %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= panchayat[:p_non_medical_count] + panchayat[:p_medical_count] %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= panchayat[:p_non_medical_count_remaining] + panchayat[:p_medical_count_remaining] %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= panchayat[:p_medical_count] %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= panchayat[:p_medical_count_remaining]%>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= panchayat[:p_non_medical_count] %>
+                        </td>
+                        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 text-gray-500">
+                            <%= panchayat[:p_non_medical_count_remaining]%>
+                        </td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% end %>
