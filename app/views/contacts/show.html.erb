@@ -124,7 +124,6 @@
                             </div>
                             <div>
                                 <span class="text-xs">
-                                    Requested
                                     <%= time_ago_in_words(medical_req.created_at) %> ago
                                 </span>
                                 <% if current_user.admin? or current_user.district_admin? %>
@@ -169,7 +168,6 @@
                             </div>
                             <div>
                                 <span class="text-xs">
-                                    Requested
                                     <%= time_ago_in_words(non_medical_req.created_at) %> ago
                                 </span>
                                 <% if current_user.admin? or current_user.district_admin? %>
