@@ -30,7 +30,7 @@ class NonMedicalReqsController < ApplicationController
   def not_able
     @non_medical_req = NonMedicalReq.find(params[:id])
     @contact = Contact.find(params[:contact_id])
-    @non_medical_req.not_able = true
+    @non_medical_req.not_able_type = params[:not_able_type]
 
     if @non_medical_req.save
       respond_to do |format|
