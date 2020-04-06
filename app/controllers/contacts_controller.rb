@@ -117,7 +117,7 @@ class ContactsController < ApplicationController
 
   def find_phone
     phone = params["search"]["phone_number"]
-    @contact = Contact.find_by(phone: phone)
+    @contact = Contact.find_by(phone: phone.squish)
     if @contact
       redirect_to @contact
     else
