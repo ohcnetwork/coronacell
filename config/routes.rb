@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   root 'contacts#index'
 
-  get '/healthvolunteer', to: redirect('https://docs.google.com/forms/d/e/1FAIpQLSf9BHXZ9cKd8QPkWZ3fHXLliCXfrKOlIdBBJgGcLhEMPMzkfQ/viewform?vc=0&c=0&w=1')
+  get '/healthvolunteer', to: redirect('https://docs.google.com/forms/d/e/1FAIpQLSd6bQwTa5uTSgyo-Da-ir6bR0sxfGrRDtyxobBlkvaVlA8Z2A/viewform?usp=sf_link')
 
   get 'find_phone' => "contacts#find_phone"
   resources :contacts, except: [:destroy] do
