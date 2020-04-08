@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_025337) do
+ActiveRecord::Schema.define(version: 2020_04_08_082213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_025337) do
     t.integer "number_of_family_members"
     t.date "date_of_contact"
     t.string "tracking_type"
+    t.text "panchayat_feedback"
     t.index ["panchayat_id"], name: "index_contacts_on_panchayat_id"
     t.index ["phone"], name: "index_contacts_on_phone", unique: true
   end
