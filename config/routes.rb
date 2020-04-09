@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get :make_call, on: :member
     get :generate_non_medical_reqs, on: :collection
     get :generate_medical_reqs, on: :collection
+    get :generate_complete_reqs, on: :collection
 
     resources :non_medical_reqs do
       get :fullfill, on: :member

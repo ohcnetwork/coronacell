@@ -123,8 +123,21 @@ class ContactsController < ApplicationController
       format.csv { send_data contacts.to_medical_csv, filename: "users-#{Date.today}.csv" }
     end
   end
+
   def generate_non_medical_reqs
     unscoped_contacts = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct
+    contacts = scope_access(unscoped_contacts)
+    respond_to do |format|
+      format.csv { send_data contacts.to_non_medical_csv, filename: "users-#{Date.today}.csv" }
+    end
+  end
+
+  def generate_complete_reqs
+    completed_ids = Contact.joins(:non_medical_reqs).where.not(non_medical_reqs: {fullfilled: nil}).distinct.pluck(:id) +
+                    Contact.joins(:non_medical_reqs).where.not(non_medical_reqs: {not_able_type: nil}).distinct.pluck(:id) +
+                    Contact.joins(:medical_reqs).where.not(medical_reqs: {fullfilled: nil}).distinct.pluck(:id) +
+                    Contact.joins(:medical_reqs).where.not(medical_reqs: {not_able_type: nil}).distinct.pluck(:id)
+    unscoped_contacts = Contact.where(id: completed_ids).distinct
     contacts = scope_access(unscoped_contacts)
     respond_to do |format|
       format.csv { send_data contacts.to_non_medical_csv, filename: "users-#{Date.today}.csv" }
