@@ -134,9 +134,7 @@ class ContactsController < ApplicationController
 
   def generate_complete_reqs
     completed_ids = Contact.joins(:non_medical_reqs).where.not(non_medical_reqs: {fullfilled: nil}).distinct.pluck(:id) +
-                    Contact.joins(:non_medical_reqs).where.not(non_medical_reqs: {not_able_type: nil}).distinct.pluck(:id) +
                     Contact.joins(:medical_reqs).where.not(medical_reqs: {fullfilled: nil}).distinct.pluck(:id) +
-                    Contact.joins(:medical_reqs).where.not(medical_reqs: {not_able_type: nil}).distinct.pluck(:id)
     unscoped_contacts = Contact.where(id: completed_ids).distinct
     contacts = scope_access(unscoped_contacts)
     respond_to do |format|
