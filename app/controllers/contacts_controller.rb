@@ -140,7 +140,7 @@ class ContactsController < ApplicationController
     unscoped_contacts = Contact.where(id: completed_ids).distinct
     contacts = scope_access(unscoped_contacts)
     respond_to do |format|
-      format.csv { send_data contacts.to_non_medical_csv, filename: "users-#{Date.today}.csv" }
+      format.csv { send_data contacts.to_csv, filename: "users-#{Date.today}.csv" }
     end
   end
 
