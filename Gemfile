@@ -28,11 +28,8 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-# Simple Form
 gem 'simple_form'
-# Devise Auth
 gem 'devise'
-# String Enums as Select
 gem 'enum_help'
 
 
@@ -48,6 +45,12 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'solargraph'
+
+  gem 'rubocop'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+
 end
 
 group :test do
