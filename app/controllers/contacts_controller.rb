@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class ContactsController < ApplicationController
   before_action :set_contact, only: [:show, :edit, :update, :destroy, :make_call]
 
   # GET /contacts
   # GET /contacts.json
   def index
-    non_medical_ids = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.pluck(:id)
-    medical_ids = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.pluck(:id)
+    non_medical_ids = Contact.joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.pluck(:id)
+    medical_ids = Contact.joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.pluck(:id)
     unscoped_contacts = Contact.where(id: non_medical_ids + medical_ids).distinct
 
     @contacts = scope_access(unscoped_contacts)
     if current_user.phone_caller?
-      contacts_called_by_user_today = Contact.joins(:calls).where(calls: {user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day}).distinct
+      contacts_called_by_user_today = Contact.joins(:calls).where(calls: { user_id: current_user.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day }).distinct
       @contacts = contacts_called_by_user_today
     end
 
@@ -18,36 +20,40 @@ class ContactsController < ApplicationController
       @non_medical_count = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).distinct.count
       @medical_count = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).distinct.count
 
-      @non_medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
-      @medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+      @non_medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
+      @medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
     end
 
+<<<<<<< HEAD
     if current_user.district_admin? or current_user.admin?
       today = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       @non_medical_today_count = NonMedicalReq.where(created_at: today).distinct.count
       @medical_today_count = MedicalReq.where(created_at: today).distinct.count
 
+=======
+    if current_user.district_admin? || current_user.admin?
+>>>>>>> 39e117c18b9f9c9bb4f963fa6e34e1319b5ec395
       @non_medical_count = Contact.joins(:non_medical_reqs).distinct.count
       @medical_count = Contact.joins(:medical_reqs).distinct.count
 
-      @non_medical_count_remaining = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
-      @medical_count_remaining = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+      @non_medical_count_remaining = Contact.joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
+      @medical_count_remaining = Contact.joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
 
       panchayats = Panchayat.order(name: :asc)
-      @panchayats_data = panchayats.map {|p|
+      @panchayats_data = panchayats.map { |p|
         {
           name: p.name,
           p_non_medical_count:  Contact.where(panchayat: p).joins(:non_medical_reqs).distinct.count,
           p_medical_count:  Contact.where(panchayat: p).joins(:medical_reqs).distinct.count,
-          p_non_medical_count_remaining: Contact.where(panchayat: p).joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count,
-          p_medical_count_remaining:  Contact.where(panchayat: p ).joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct.count
+          p_non_medical_count_remaining: Contact.where(panchayat: p).joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count,
+          p_medical_count_remaining:  Contact.where(panchayat: p).joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
         }
       }
     end
 
     respond_to do |format|
       format.html
-      format.csv {send_data @contacts.to_csv, filename: "requests-#{Date.today}.csv"}
+      format.csv { send_data @contacts.to_csv, filename: "requests-#{Date.today}.csv" }
     end
   end
 
@@ -77,7 +83,7 @@ class ContactsController < ApplicationController
     else
       respond_to do |format|
         if @contact.save
-          format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+          format.html { redirect_to @contact, notice: "Contact was successfully created." }
           format.json { render :show, status: :created, location: @contact }
         else
           format.html { render :new }
@@ -92,7 +98,7 @@ class ContactsController < ApplicationController
   def update
     respond_to do |format|
       if @contact.update(contact_params)
-        format.html { redirect_to @contact, notice: 'Contact was successfully updated.' }
+        format.html { redirect_to @contact, notice: "Contact was successfully updated." }
         format.json { render :show, status: :ok, location: @contact }
       else
         format.html { render :edit }
@@ -106,7 +112,7 @@ class ContactsController < ApplicationController
   def destroy
     @contact.destroy
     respond_to do |format|
-      format.html { redirect_to contacts_url, notice: 'Contact was successfully destroyed.' }
+      format.html { redirect_to contacts_url, notice: "Contact was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -121,7 +127,7 @@ class ContactsController < ApplicationController
   end
 
   def generate_medical_reqs
-    unscoped_contacts = Contact.joins(:medical_reqs).where(medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct
+    unscoped_contacts = Contact.joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct
     contacts = scope_access(unscoped_contacts)
     respond_to do |format|
       format.csv { send_data contacts.to_medical_csv, filename: "users-#{Date.today}.csv" }
@@ -129,7 +135,7 @@ class ContactsController < ApplicationController
   end
 
   def generate_non_medical_reqs
-    unscoped_contacts = Contact.joins(:non_medical_reqs).where(non_medical_reqs: {fullfilled: nil, not_able_type: nil}).distinct
+    unscoped_contacts = Contact.joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct
     contacts = scope_access(unscoped_contacts)
     respond_to do |format|
       format.csv { send_data contacts.to_non_medical_csv, filename: "users-#{Date.today}.csv" }
