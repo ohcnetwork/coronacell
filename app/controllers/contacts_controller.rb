@@ -24,15 +24,11 @@ class ContactsController < ApplicationController
       @medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
     end
 
-<<<<<<< HEAD
     if current_user.district_admin? or current_user.admin?
       today = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       @non_medical_today_count = NonMedicalReq.where(created_at: today).distinct.count
       @medical_today_count = MedicalReq.where(created_at: today).distinct.count
 
-=======
-    if current_user.district_admin? || current_user.admin?
->>>>>>> 39e117c18b9f9c9bb4f963fa6e34e1319b5ec395
       @non_medical_count = Contact.joins(:non_medical_reqs).distinct.count
       @medical_count = Contact.joins(:medical_reqs).distinct.count
 
