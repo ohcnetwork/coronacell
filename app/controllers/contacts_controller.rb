@@ -23,6 +23,10 @@ class ContactsController < ApplicationController
     end
 
     if current_user.district_admin? or current_user.admin?
+      today = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
+      @non_medical_today_count = NonMedicalReq.where(created_at: today).distinct.count
+      @medical_today_count = MedicalReq.where(created_at: today).distinct.count
+
       @non_medical_count = Contact.joins(:non_medical_reqs).distinct.count
       @medical_count = Contact.joins(:medical_reqs).distinct.count
 
