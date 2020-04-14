@@ -9,6 +9,7 @@ class ContactsController < ApplicationController
     non_medical_ids = Contact.joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.pluck(:id)
     medical_ids = Contact.joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.pluck(:id)
     unscoped_contacts = Contact.where(id: non_medical_ids + medical_ids).distinct
+    @act_as_panchayat = params[:panchayat_name] ? true : false
 
     @contacts = scope_access(unscoped_contacts)
     if current_user.phone_caller?
@@ -16,15 +17,19 @@ class ContactsController < ApplicationController
       @contacts = contacts_called_by_user_today
     end
 
-    if current_user.panchayat_admin?
-      @non_medical_count = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).distinct.count
-      @medical_count = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).distinct.count
+    if current_user.panchayat_admin? or  @act_as_panchayat
+      if @act_as_panchayat
+        panchayat = Panchayat.find_by(name: params[:panchayat_name])
+        @contacts = unscoped_contacts.where(panchayat: panchayat)
+      else
+        panchayat = current_user.panchayat
+      end
+      @non_medical_count = Contact.where(panchayat: panchayat).joins(:non_medical_reqs).distinct.count
+      @medical_count = Contact.where(panchayat: panchayat).joins(:medical_reqs).distinct.count
 
-      @non_medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
-      @medical_count_remaining = Contact.where(panchayat: current_user.panchayat).joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
-    end
-
-    if current_user.district_admin? or current_user.admin?
+      @non_medical_count_remaining = Contact.where(panchayat: panchayat).joins(:non_medical_reqs).where(non_medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
+      @medical_count_remaining = Contact.where(panchayat: panchayat).joins(:medical_reqs).where(medical_reqs: { fullfilled: nil, not_able_type: nil }).distinct.count
+    elsif current_user.district_admin? or current_user.admin?
       today = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       @non_medical_today_count = NonMedicalReq.where(created_at: today).distinct.count
       @medical_today_count = MedicalReq.where(created_at: today).distinct.count
