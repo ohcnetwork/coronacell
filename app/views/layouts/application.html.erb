@@ -19,6 +19,9 @@
         <% end %>
 
         <div class="flex flex-col items-start lg:items-center lg:flex-row">
+            <% if current_user.try(:panchayat_admin?) %>
+                <a href="https://drive.google.com/drive/folders/1Rh4e9ClkYLQ25tXCMaTfNIGNWn_a0PO1" class="inline-block rounded-md">Drive Link</a>
+            <% end %>
             <% if user_signed_in? and (not current_user.panchayat_admin?) %>
             <div class="mt-3 lg:mt-0">
                 <%= simple_form_for :search, url: find_phone_path, method: "GET" do |f| %>
